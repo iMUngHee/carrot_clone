@@ -2,7 +2,7 @@ import type { NextPage } from "next";
 
 const Upload: NextPage = () => {
   return (
-    <div className="px-4 py-16">
+    <div className="space-y-5 px-4 py-16">
       <div>
         <label className="flex h-48 w-full cursor-pointer items-center justify-center rounded-md border-2 border-dashed border-gray-300 text-gray-600 hover:border-orange-500 hover:text-orange-500">
           <svg
@@ -22,7 +22,23 @@ const Upload: NextPage = () => {
           <input className="hidden" type="file" />
         </label>
       </div>
-      <div className="my-5">
+      <div>
+        <label
+          className="mb-1 block text-sm font-medium text-gray-700"
+          htmlFor="name"
+        >
+          Name
+        </label>
+        <div className="relative flex items-center  rounded-md shadow-sm">
+          <input
+            id="name"
+            type="email"
+            className="w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-orange-500 focus:outline-none focus:ring-orange-500"
+            required
+          />
+        </div>
+      </div>
+      <div>
         <label
           className="mb-1 block text-sm font-medium text-gray-700"
           htmlFor="price"
@@ -45,16 +61,20 @@ const Upload: NextPage = () => {
         </div>
       </div>
       <div>
-        <label className="mb-1 block text-sm font-medium text-gray-700">
+        <label
+          htmlFor="description"
+          className="mb-1 block text-sm font-medium text-gray-700"
+        >
           Description
         </label>
         <textarea
+          id="description"
           className="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-orange-500 focus:outline-none focus:ring-orange-500"
           rows={4}
         />
       </div>
-      <button className="mt-4 w-full rounded-md border border-transparent bg-orange-500 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2">
-        Upload product
+      <button className=" w-full rounded-md border border-transparent bg-orange-500 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 ">
+        Upload item
       </button>
     </div>
   );
