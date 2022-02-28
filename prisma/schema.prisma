@@ -20,6 +20,9 @@ model User {
   tokens    Token[]
   products  Products[]
   fav       Fav[]
+  posts     Post[]
+  answers   Answer[]
+  wonders   Wonder[]
 }
 
 model Token {
@@ -52,4 +55,36 @@ model Fav {
   userId    Int
   product   Products @relation(fields: [productId], references: [id], onDelete: Cascade)
   productId Int
+}
+
+model Post {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  question  String   @db.MediumText
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  answers   Answer[]
+  wonders   Wonder[]
+}
+
+model Answer {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  answer    String   @db.MediumText
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId    Int
+}
+
+model Wonder {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  postId    Int
 }
