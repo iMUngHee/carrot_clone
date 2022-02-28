@@ -5,6 +5,8 @@ import { useRouter } from "next/router";
 import useSWR from "swr";
 import { Answer, Post, User } from "@prisma/client";
 import Link from "next/link";
+import useMutation from "@libs/client/useMutation";
+import { cls } from "@libs/client/utils";
 
 interface AnswerWithUser extends Answer {
   user: User;
@@ -22,13 +24,35 @@ interface PostWithUser extends Post {
 interface PostResponse {
   ok: boolean;
   post: PostWithUser;
+  isWondering: boolean;
 }
 
 const CommunityPostDetail: NextPage = () => {
   const router = useRouter();
-  const { data, error } = useSWR<PostResponse>(
+  const { data, mutate } = useSWR<PostResponse>(
     router.query.id ? `/api/posts/${router.query.id}` : null,
   );
+  const [wonder] = useMutation(`/api/posts/${router.query.id}/wonder`);
+  const onWonder = () => {
+    mutate(
+      (prev) =>
+        prev && {
+          ...prev,
+          post: {
+            ...prev.post,
+            _count: {
+              ...prev.post._count,
+              wonders: prev.isWondering
+                ? prev.post._count.wonders - 1
+                : prev.post._count.wonders + 1,
+            },
+          },
+          isWondering: !prev.isWondering,
+        },
+      false,
+    );
+    wonder({});
+  };
   return (
     <Layout canGoBack>
       <div>
@@ -54,7 +78,13 @@ const CommunityPostDetail: NextPage = () => {
             {data?.post.question}
           </div>
           <div className="mt-3 flex w-full space-x-5 border-t border-b-[2px] px-4 py-2.5  text-gray-700">
-            <span className="flex items-center space-x-2 text-sm">
+            <span
+              onClick={onWonder}
+              className={cls(
+                "flex cursor-pointer items-center space-x-2 text-sm transition-colors",
+                data?.isWondering ? "text-green-500" : "",
+              )}
+            >
               <svg
                 className="h-4 w-4"
                 fill="none"
