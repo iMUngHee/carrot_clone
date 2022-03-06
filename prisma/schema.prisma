@@ -64,6 +64,8 @@ model Post {
   question  String   @db.MediumText
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId    Int
+  longitude Float?
+  latitude  Float?
   answers   Answer[]
   wonders   Wonder[]
 }
