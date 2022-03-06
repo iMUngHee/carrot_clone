@@ -32,6 +32,7 @@ async function handler(
       answers: {
         select: {
           answer: true,
+          id: true,
           user: {
             select: {
               name: true,
